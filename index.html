@@ -4,281 +4,439 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Mehta is back — Telegram</title>
+<meta name="description" content="Join the official Telegram channel of Mehta is back for daily stock market sessions, updates, and trading psychology.">
+
+<!-- Open Graph / Social Media Sharing Tags -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://pur-eight.vercel.app/">
+<meta property="og:title" content="Mehta is back — Telegram">
+<meta property="og:description" content="Daily stock market sessions — updates, chart reading & trading psychology, explained simply.">
+<meta property="og:image" content="https://i.ibb.co/Lz91ZcWp/q-YC3n-Vs-Ida3-NFYIk0s-MOK2q6ir-U7-ZW8-Uo-Ia1-L-f-Spzs-Wiq-Ygixw-X-X6nvbt7b-UQO6-RUg-IT98-OV-he4-Kn9zx-Cvi.jpg">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Mehta is back — Telegram">
+<meta name="twitter:description" content="Daily stock market sessions — updates, chart reading & trading psychology, explained simply.">
+
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📈</text></svg>">
 <link rel="dns-prefetch" href="https://t.me">
+
 <style>
   :root{
-    --bg: #F4F6F5;
-    --card: #FFFFFF;
-    --line: #E7EAE8;
-    --ink: #14181C;
-    --ink-dim: #6B7280;
-    --ink-faint: #9AA1A9;
-    --brand: #0B7F58;
-    --brand-soft: #E4F4EC;
-    --tg-blue: #2AABEE;
-    --tg-blue-dark: #1E96D6;
-    --bubble: #F0F4F2;
-    --ad-bg: #FFF8E6;
-    --ad-border: #FFE0A3;
-    --ad-text: #8B5A00;
+    --bg: #070B0A;
+    --bg-2: #0C1412;
+    --surface: #0F1A18;
+    --surface-2: #122220;
+    --line: #1B2A27;
+    --line-hot: #234239;
+    --ink: #E6F1EC;
+    --ink-dim: #8CA39B;
+    --ink-faint: #4E635E;
+    --neon: #C6FF3D;
+    --neon-soft: #C6FF3D22;
+    --neon-glow: 0 0 20px #C6FF3D66, 0 0 40px #C6FF3D33;
+    --mint: #4AFFB8;
+    --danger: #FF6B5C;
   }
-  *{ box-sizing: border-box; }
+  *{ box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   html,body{
     margin:0; padding:0;
     background: var(--bg);
     color: var(--ink);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Inter", Roboto, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
-    -webkit-tap-highlight-color: transparent;
+    overflow-x: hidden;
   }
   body{
     display:flex;
     justify-content:center;
     min-height:100vh;
-    padding: 20px 14px 32px;
+    padding: 0 0 32px;
+    position: relative;
     background:
-      radial-gradient(120% 60% at 50% 0%, #E9F6EF 0%, var(--bg) 60%);
+      radial-gradient(90% 50% at 50% 0%, #0F2A22 0%, transparent 55%),
+      radial-gradient(60% 40% at 100% 100%, #0A1F1A 0%, transparent 60%),
+      var(--bg);
   }
-  .page{ width:100%; max-width: 400px; }
+  /* grid overlay */
+  body::before{
+    content:"";
+    position: fixed; inset: 0;
+    background-image:
+      linear-gradient(rgba(198,255,61,0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(198,255,61,0.035) 1px, transparent 1px);
+    background-size: 32px 32px;
+    pointer-events: none;
+    z-index: 0;
+    mask-image: radial-gradient(120% 80% at 50% 30%, #000 30%, transparent 90%);
+    -webkit-mask-image: radial-gradient(120% 80% at 50% 30%, #000 30%, transparent 90%);
+  }
 
-  .appbar{
-    display:flex; align-items:center; gap:8px;
-    padding: 4px 6px 12px;
+  .page{
+    width:100%; max-width: 420px;
+    position: relative; z-index: 1;
+    padding: 0 16px;
+  }
+
+  /* ── LIVE TICKER ── */
+  .ticker{
+    display:flex; align-items:center; gap:10px;
+    padding: 12px 4px 14px;
+    font-family: ui-monospace, "SF Mono", "Roboto Mono", Menlo, monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
     color: var(--ink-faint);
-    font-size: 13px; font-weight: 600;
+    overflow: hidden;
   }
+  .live-dot{
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--mint);
+    box-shadow: 0 0 10px var(--mint), 0 0 20px var(--mint);
+    animation: pulse 1.6s ease-in-out infinite;
+    flex-shrink: 0;
+  }
+  @keyframes pulse{
+    0%,100%{ opacity:1; transform: scale(1); }
+    50%{ opacity:.4; transform: scale(.75); }
+  }
+  .ticker-track{
+    flex: 1;
+    overflow: hidden;
+    white-space: nowrap;
+    position: relative;
+  }
+  .ticker-track span{
+    display: inline-block;
+    padding-left: 100%;
+    animation: scroll 22s linear infinite;
+  }
+  @keyframes scroll{
+    to{ transform: translateX(-100%); }
+  }
+  .ticker .sep{ color: var(--neon); }
 
+  /* ── CARD ── */
   .card{
-    background: var(--card);
+    position: relative;
+    background: linear-gradient(180deg, var(--surface) 0%, var(--bg-2) 100%);
     border: 1px solid var(--line);
-    border-radius: 22px;
-    padding: 28px 20px 22px;
-    box-shadow: 0 1px 2px rgba(20,24,28,0.05), 0 16px 32px rgba(20,24,28,0.07);
+    border-radius: 4px;
+    padding: 34px 22px 24px;
+    box-shadow:
+      0 0 0 1px rgba(198,255,61,0.04),
+      0 30px 60px -20px rgba(0,0,0,0.8);
     opacity: 0;
-    transform: translateY(10px);
-    animation: rise 0.5s ease forwards;
+    transform: translateY(14px);
+    animation: rise 0.6s cubic-bezier(.2,.8,.2,1) forwards;
+    overflow: hidden;
   }
-  @keyframes rise{
-    to{ opacity:1; transform: translateY(0); }
+  .card::before{
+    content:"";
+    position:absolute; inset: 0;
+    background: radial-gradient(60% 30% at 50% 0%, rgba(198,255,61,0.07), transparent 70%);
+    pointer-events:none;
   }
+  @keyframes rise{ to{ opacity:1; transform: translateY(0); } }
   @media (prefers-reduced-motion: reduce){
     .card{ opacity:1; transform:none; animation:none; }
+    .ticker-track span{ animation: none; padding-left: 0; }
+    .live-dot{ animation: none; }
   }
 
-  .avatar-wrap{ display:flex; justify-content:center; }
-  .avatar{
-    width: 88px; height: 88px;
+  /* corner brackets */
+  .corner{
+    position:absolute;
+    width: 14px; height: 14px;
+    border-color: var(--neon);
+    border-style: solid;
+    border-width: 0;
+    opacity: 0.85;
+  }
+  .corner.tl{ top: 8px; left: 8px; border-top-width: 2px; border-left-width: 2px; }
+  .corner.tr{ top: 8px; right: 8px; border-top-width: 2px; border-right-width: 2px; }
+  .corner.bl{ bottom: 8px; left: 8px; border-bottom-width: 2px; border-left-width: 2px; }
+  .corner.br{ bottom: 8px; right: 8px; border-bottom-width: 2px; border-right-width: 2px; }
+
+  /* ── AVATAR ── */
+  .avatar-wrap{ display:flex; justify-content:center; margin-bottom: 20px; }
+  .avatar-ring{
+    position: relative;
+    width: 96px; height: 96px;
     border-radius: 50%;
-    overflow:hidden;
-    background: var(--bubble);
     padding: 3px;
-    background: linear-gradient(135deg, var(--brand), var(--tg-blue));
+    background: conic-gradient(from 180deg, var(--neon), var(--mint), var(--neon));
+    box-shadow: var(--neon-glow);
+    animation: spinRing 8s linear infinite;
+  }
+  @keyframes spinRing{ to{ transform: rotate(360deg); } }
+  .avatar-ring::after{
+    content:"";
+    position:absolute; inset: -6px;
+    border-radius: 50%;
+    border: 1px dashed var(--line-hot);
+    animation: spinRing 14s linear infinite reverse;
   }
   .avatar-inner{
     width:100%; height:100%;
-    border-radius:50%;
-    overflow:hidden;
-    border: 3px solid #fff;
+    border-radius: 50%;
+    overflow: hidden;
+    background: var(--surface-2);
+    border: 3px solid var(--bg);
+    animation: spinRing 8s linear infinite reverse;
   }
-  .avatar img{ width:100%; height:100%; object-fit:cover; display:block; }
-
-  .name-row{
-    display:flex; align-items:center; justify-content:center; gap:6px;
-    margin-top: 15px;
-  }
-  .name-row h1{
-    font-size: 17px; font-weight: 800; margin:0;
-    text-align:center; line-height:1.35;
-    letter-spacing: -0.01em;
+  .avatar-inner img{ width:100%; height:100%; object-fit: cover; display:block; }
+  @media (prefers-reduced-motion: reduce){
+    .avatar-ring, .avatar-ring::after, .avatar-inner{ animation: none; }
   }
 
-  .badge-row{
-    display:flex; justify-content:center; gap:6px;
-    margin-top: 8px;
-    flex-wrap: wrap;
-  }
-  .badge{
-    font-size: 11px;
-    font-weight: 600;
-    padding: 4px 10px;
-    border-radius: 999px;
-    background: var(--brand-soft);
-    color: var(--brand);
-  }
-  .badge.alt{
-    background: var(--bubble);
-    color: var(--ink-dim);
-  }
-
-  .managed-by{
-    text-align:center;
-    font-size: 11.5px;
-    color: var(--ink-faint);
-    margin: 10px 0 0;
-  }
-
-  /* Advertisement Box */
-  .ad-box{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    margin: 16px 2px 0;
-    padding: 12px 14px;
-    background: var(--ad-bg);
-    border: 1px solid var(--ad-border);
-    border-radius: 12px;
-    text-decoration: none;
-    transition: transform 0.12s ease, box-shadow 0.12s ease;
-  }
-  .ad-box:active{
-    transform: scale(0.99);
-    box-shadow: 0 2px 8px rgba(139,90,0,0.08);
-  }
-  .ad-box svg{ flex-shrink: 0; }
-  .ad-content{
-    flex: 1;
-    min-width: 0;
-  }
-  .ad-label{
-    font-size: 9px;
-    font-weight: 800;
+  /* ── NAME ── */
+  .handle{
+    display:flex; align-items:center; justify-content:center; gap:8px;
+    font-family: ui-monospace, "SF Mono", "Roboto Mono", Menlo, monospace;
+    font-size: 10px;
+    color: var(--neon);
+    letter-spacing: 0.14em;
     text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--ad-text);
-    opacity: 0.7;
-    margin-bottom: 2px;
+    margin-bottom: 10px;
   }
-  .ad-text{
-    font-size: 12px;
-    font-weight: 700;
-    color: var(--ad-text);
-    line-height: 1.35;
+  .handle::before, .handle::after{
+    content:"";
+    width: 22px; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--line-hot));
   }
-  .ad-link{
-    font-size: 11px;
-    color: var(--ad-text);
-    opacity: 0.75;
-    margin-top: 3px;
-    word-break: break-all;
-    font-weight: 500;
+  .handle::after{ background: linear-gradient(90deg, var(--line-hot), transparent); }
+
+  h1{
+    font-size: 22px;
+    font-weight: 900;
+    text-align: center;
+    margin: 0;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    background: linear-gradient(180deg, #FFFFFF 0%, #A8C4B8 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
 
   .desc{
-    text-align:center; font-size: 13px; line-height: 1.6;
-    color: var(--ink-dim); margin: 16px 4px 0;
+    text-align: center;
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: var(--ink-dim);
+    margin: 14px 2px 0;
   }
 
-  .trust-list{
-    display:flex;
-    flex-direction:column;
-    gap: 9px;
-    margin: 18px 2px 0;
-    padding: 14px 14px;
-    background: var(--bubble);
-    border-radius: 14px;
+  /* ── STATS BAR ── */
+  .stats{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    margin-top: 22px;
+    overflow: hidden;
   }
-  .trust-item{
-    display:flex; align-items:flex-start; gap:8px;
-    font-size: 12.5px;
-    line-height:1.45;
-    color: var(--ink);
+  .stat{
+    background: var(--bg-2);
+    padding: 12px 8px;
+    text-align: center;
   }
-  .trust-item svg{ flex-shrink:0; margin-top:2px; }
+  .stat-val{
+    font-family: ui-monospace, "SF Mono", "Roboto Mono", Menlo, monospace;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--neon);
+    letter-spacing: 0.02em;
+  }
+  .stat-key{
+    font-family: ui-monospace, "SF Mono", "Roboto Mono", Menlo, monospace;
+    font-size: 9px;
+    color: var(--ink-faint);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-top: 3px;
+  }
 
-  .join-instruction{
-    text-align:center;
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--ink);
-    margin: 22px 4px 0;
+  /* ── CTA ── */
+  .cta-label{
+    font-family: ui-monospace, "SF Mono", "Roboto Mono", Menlo, monospace;
+    font-size: 10px;
+    color: var(--ink-faint);
+    text-align: center;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin: 24px 0 10px;
   }
 
   .cta{
-    display:flex; align-items:center; justify-content:center; gap:8px;
-    width:100%; margin-top: 20px;
-    padding: 16px 18px;
-    background: linear-gradient(135deg, var(--tg-blue), var(--tg-blue-dark));
-    color: #fff; text-decoration:none;
-    border-radius: 14px;
-    font-weight: 700; font-size: 15.5px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 18px 20px;
+    background: var(--neon);
+    color: #06100D;
+    text-decoration: none;
     border: none;
-    box-shadow: 0 8px 20px rgba(42,171,238,0.28);
-    transition: transform 0.12s ease, box-shadow 0.12s ease;
+    border-radius: 3px;
+    font-weight: 800;
+    font-size: 15px;
+    letter-spacing: 0.01em;
+    cursor: pointer;
+    box-shadow: 0 0 0 1px var(--neon), 0 0 24px rgba(198,255,61,0.35), inset 0 -3px 0 rgba(0,0,0,0.15);
+    transition: transform 0.12s ease, box-shadow 0.2s ease, background 0.2s ease;
+    overflow: hidden;
   }
-  .cta:active{ transform: scale(0.98); box-shadow: 0 4px 10px rgba(42,171,238,0.22); }
+  .cta::after{
+    content:"";
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.55), transparent);
+    animation: shine 3.2s ease-in-out infinite;
+  }
+  @keyframes shine{
+    0%{ left: -100%; }
+    55%, 100%{ left: 100%; }
+  }
+  .cta:active{
+    transform: scale(0.985);
+    box-shadow: 0 0 0 1px var(--neon), 0 0 14px rgba(198,255,61,0.5), inset 0 -1px 0 rgba(0,0,0,0.15);
+  }
+  @media (prefers-reduced-motion: reduce){ .cta::after{ animation: none; } }
 
   .cta-note{
-    display:flex; align-items:center; justify-content:center; gap:5px;
-    text-align:center; font-size: 11px;
-    color: var(--ink-faint); margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-family: ui-monospace, "SF Mono", "Roboto Mono", Menlo, monospace;
+    font-size: 10px;
+    color: var(--ink-faint);
+    letter-spacing: 0.06em;
+    margin-top: 12px;
+    text-transform: uppercase;
   }
 
-  .fallback{ display:none; margin-top: 10px; text-align:center; }
+  .fallback{ display:none; margin-top: 12px; text-align:center; }
   .fallback.show{ display:block; }
   .fallback button{
-    background: none;
-    border: 1px solid var(--line);
-    color: var(--ink-dim);
-    font-size: 12px;
-    padding: 9px 14px;
-    border-radius: 8px;
-    font-family: inherit;
+    background: transparent;
+    border: 1px solid var(--line-hot);
+    color: var(--mint);
+    font-family: ui-monospace, "SF Mono", "Roboto Mono", Menlo, monospace;
+    font-size: 11px;
+    padding: 10px 14px;
+    border-radius: 3px;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    transition: background 0.15s ease;
   }
-  .fallback button:active{ background: var(--bubble); }
-  .fallback .copied{ color: var(--brand); font-weight:600; }
+  .fallback button:active{ background: var(--surface-2); }
+  .fallback .copied{ color: var(--neon); border-color: var(--neon); font-weight: 600; }
 
-  .divider{
-    display:flex; align-items:center; gap:10px;
-    margin: 26px 0 14px;
-    color: var(--ink-faint); font-size: 11px; font-weight:700; letter-spacing:0.02em;
+  /* ── FEATURES ── */
+  .features{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 26px;
+    padding-top: 22px;
+    border-top: 1px dashed var(--line-hot);
   }
-  .divider::before, .divider::after{ content:""; flex:1; height:1px; background: var(--line); }
-
-  .about-text{
-    font-size: 12.5px;
-    line-height: 1.55;
-    color: var(--ink-dim);
-    margin: 0 0 12px;
-  }
-
-  .info-table{
-    display:flex;
-    flex-direction:column;
-    border: 1px solid var(--line);
-    border-radius: 12px;
-    overflow:hidden;
-  }
-  .info-row{
-    display:flex;
-    justify-content:space-between;
+  .feat{
+    display: flex;
+    align-items: center;
     gap: 10px;
-    padding: 11px 13px;
-    font-size: 12.5px;
-    border-bottom: 1px solid var(--line);
-    background: var(--card);
-  }
-  .info-row:last-child{ border-bottom:none; }
-  .info-row .k{ color: var(--ink-faint); }
-  .info-row .v{ color: var(--ink); font-weight: 700; text-align:right; }
-
-  .footer-meta{
-    margin-top: 20px;
-    padding-top: 14px;
-    border-top: 1px solid var(--line);
-    text-align:center;
+    font-family: ui-monospace, "SF Mono", "Roboto Mono", Menlo, monospace;
     font-size: 11.5px;
-    color: var(--ink-faint);
+    color: var(--ink-dim);
+    letter-spacing: 0.02em;
   }
-  .footer-meta a{ color: var(--ink-dim); font-weight:600; text-decoration:underline; }
+  .feat svg{ flex-shrink: 0; }
+  .feat b{ color: var(--ink); font-weight: 700; }
+
+  /* ── FOOTER ── */
+  .about{
+    font-size: 11.5px;
+    line-height: 1.6;
+    color: var(--ink-faint);
+    text-align: center;
+    margin: 22px 0 0;
+    font-family: ui-monospace, "SF Mono", "Roboto Mono", Menlo, monospace;
+  }
+  .about a{ color: var(--mint); text-decoration: none; border-bottom: 1px dotted var(--line-hot); }
+
+  /* ── POWERED BY ── */
+  .powered{
+    margin-top: 18px;
+    padding: 12px 14px;
+    border: 1px solid var(--line-hot);
+    border-radius: 3px;
+    text-align: center;
+    background: linear-gradient(180deg, rgba(198,255,61,0.05), rgba(198,255,61,0.01));
+    position: relative;
+    overflow: hidden;
+  }
+  .powered::before{
+    content:"";
+    position:absolute;
+    top:0; left:0; right:0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--neon), transparent);
+    opacity: 0.6;
+  }
+  .powered a{
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+    font-family: ui-monospace, "SF Mono", "Roboto Mono", Menlo, monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-dim);
+    transition: color 0.2s ease;
+  }
+  .powered a:active{ color: var(--neon); }
+  .powered a b{
+    color: var(--neon);
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-shadow: 0 0 12px rgba(198,255,61,0.5);
+  }
+  .powered .fire{
+    font-size: 13px;
+    filter: drop-shadow(0 0 6px rgba(255,120,40,0.7));
+  }
+
+  .copyright{
+    text-align: center;
+    font-family: ui-monospace, "SF Mono", "Roboto Mono", Menlo, monospace;
+    font-size: 10px;
+    color: var(--ink-faint);
+    letter-spacing: 0.08em;
+    margin-top: 16px;
+    text-transform: uppercase;
+  }
 
   .disclaimer{
-    margin-top: 10px;
-    font-size: 10px; line-height:1.65;
-    color: var(--ink-faint); text-align:center;
-  }
-  .copyright{
-    margin-top: 8px;
+    margin-top: 14px;
+    padding: 12px;
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    font-family: ui-monospace, "SF Mono", "Roboto Mono", Menlo, monospace;
+    font-size: 9.5px;
+    line-height: 1.7;
     color: var(--ink-faint);
+    text-align: center;
+    letter-spacing: 0.02em;
+    background: rgba(0,0,0,0.25);
   }
 </style>
 </head>
@@ -286,179 +444,127 @@
 
 <div class="page">
 
-  <div class="appbar">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <circle cx="12" cy="12" r="12" fill="#2AABEE"/>
-      <path d="M17.5 7.2L15.4 17.3c-.16.7-.58.87-1.17.54l-3.24-2.39-1.56 1.5c-.17.17-.32.32-.65.32l.23-3.29 5.99-5.41c.26-.23-.06-.36-.4-.13l-7.4 4.66-3.19-1c-.7-.22-.71-.7.14-1.03l12.47-4.8c.58-.22 1.08.13.9.94z" fill="#fff"/>
-    </svg>
-    Official Telegram Channel
+  <!-- TICKER -->
+  <div class="ticker">
+    <span class="live-dot"></span>
+    <div class="ticker-track">
+      <span>LIVE · OFFICIAL CHANNEL · STOCK MARKET EDUCATION · DAILY SESSIONS · TRADING PSYCHOLOGY · CHART READING ·</span>
+    </div>
   </div>
 
+  <!-- MAIN CARD -->
   <div class="card">
+    <span class="corner tl"></span>
+    <span class="corner tr"></span>
+    <span class="corner bl"></span>
+    <span class="corner br"></span>
 
     <div class="avatar-wrap">
-      <div class="avatar">
+      <div class="avatar-ring">
         <div class="avatar-inner">
-          <img src="https://i.ibb.co/Lz91ZcWp/q-YC3n-Vs-Ida3-NFYIk0s-MOK2q6ir-U7-ZW8-Uo-Ia1-L-f-Spzs-Wiq-Ygixw-X-X6nvbt7b-UQO6-RUg-IT98-OV-he4-Kn9zx-Cvi.jpg" alt="Mehta is back">
+          <img src="https://i.ibb.co/Lz91ZcWp/q-YC3n-Vs-Ida3-NFYIk0s-MOK2q6ir-U7-ZW8-Uo-Ia1-L-f-Spzs-Wiq-Ygixw-X-X6nvbt7b-UQO6-RUg-IT98-OV-he4-Kn9zx-Cvi.jpg" alt="Mehta is back" width="90" height="90" loading="eager" fetchpriority="high" decoding="async">
         </div>
       </div>
     </div>
 
-    <div class="name-row">
-      <h1>Mehta is back</h1>
-    </div>
+    <div class="handle">// Official Channel</div>
+    <h1>Mehta is back</h1>
 
-    <div class="badge-row">
-      <span class="badge">Verified</span>
-      <span class="badge alt">Official</span>
-    </div>
+    <p class="desc">Daily stock market sessions — updates, chart reading &amp; trading psychology, explained simply.</p>
 
-    <p class="managed-by">Managed by Mehta · Since 2020</p>
-
-    <!-- Advertisement Notice -->
-    <a class="ad-box" href="https://t.me/+3XoqJNLxYHswNTc1" target="_blank" rel="noopener noreferrer">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <rect x="3" y="4" width="18" height="14" rx="3" stroke="#8B5A00" stroke-width="1.6" fill="none"/>
-        <path d="M7 9h10M7 12h6" stroke="#8B5A00" stroke-width="1.6" stroke-linecap="round"/>
-        <circle cx="18" cy="16" r="3" fill="#8B5A00"/>
-        <path d="M18 14.8v1.4l.9.6" stroke="#fff" stroke-width="1.1" stroke-linecap="round"/>
-      </svg>
-      <div class="ad-content">
-        <div class="ad-label">Advertisement</div>
-        <div class="ad-text">This Channel Advertise By AD BUILD AGENCY</div>
-        <div class="ad-link">t.me/+3XoqJNLxYHswNTc1</div>
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-val">FREE</div>
+        <div class="stat-key">To Join</div>
       </div>
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true" style="flex-shrink:0;">
-        <path d="M9 18l6-6-6-6" stroke="#8B5A00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.5"/>
-      </svg>
-    </a>
-
-    <p class="desc">
-      Join the official channel for real‑time updates, exclusive insights, and community discussions.
-    </p>
-
-    <div class="trust-list">
-      <div class="trust-item">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path d="M12 2L3 7v5c0 5.25 3.75 9.75 9 11 5.25-1.25 9-5.75 9-11V7l-9-5z" fill="#0B7F58" opacity="0.15"/>
-          <path d="M12 2L3 7v5c0 5.25 3.75 9.75 9 11 5.25-1.25 9-5.75 9-11V7l-9-5z" stroke="#0B7F58" stroke-width="1.5" fill="none"/>
-          <path d="M9 12l2 2 4-4" stroke="#0B7F58" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        <span>Verified updates from trusted sources</span>
+      <div class="stat">
+        <div class="stat-val">100%</div>
+        <div class="stat-key">Verified</div>
       </div>
-      <div class="trust-item">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <circle cx="12" cy="12" r="9" stroke="#0B7F58" stroke-width="1.5" fill="none"/>
-          <path d="M12 7v5l3 3" stroke="#0B7F58" stroke-width="1.5" stroke-linecap="round"/>
-        </svg>
-        <span>Daily updates & timely announcements</span>
-      </div>
-      <div class="trust-item">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" stroke="#0B7F58" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-          <circle cx="9" cy="7" r="4" stroke="#0B7F58" stroke-width="1.5" fill="none"/>
-          <path d="M23 21v-2a4 4 0 00-3-3.87" stroke="#0B7F58" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-          <path d="M16 3.13a4 4 0 010 7.75" stroke="#0B7F58" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-        </svg>
-        <span>Active community of 50K+ members</span>
+      <div class="stat">
+        <div class="stat-val">ANYTIME</div>
+        <div class="stat-key">Leave</div>
       </div>
     </div>
 
-    <p class="join-instruction">Tap below to join the channel</p>
+    <div class="cta-label">▸ Tap to join</div>
 
-    <a class="cta" href="https://t.me/MehtaIsBack" target="_blank" rel="noopener noreferrer">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <circle cx="12" cy="12" r="12" fill="#fff" opacity="0.2"/>
-        <path d="M17.5 7.2L15.4 17.3c-.16.7-.58.87-1.17.54l-3.24-2.39-1.56 1.5c-.17.17-.32.32-.65.32l.23-3.29 5.99-5.41c.26-.23-.06-.36-.4-.13l-7.4 4.66-3.19-1c-.7-.22-.71-.7.14-1.03l12.47-4.8c.58-.22 1.08.13.9.94z" fill="#fff"/>
+    <a class="cta" id="joinBtn" href="https://t.me/+A4iltfbbluhlNWE1" rel="noopener">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M22 3L2.5 10.5C1.5 10.9 1.5 11.9 2.4 12.2L7 13.7L9 20C9.3 20.8 10.3 21 10.8 20.3L13.3 17L18.3 20.7C19 21.2 19.9 20.8 20.1 20L23 3.9C23.2 3.1 22.7 2.7 22 3Z" fill="#06100D"/>
       </svg>
-      Join Telegram Channel
+      JOIN TELEGRAM CHANNEL
     </a>
 
     <div class="cta-note">
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <rect x="5" y="11" width="14" height="10" rx="2" stroke="currentColor" stroke-width="1.8"/>
-        <path d="M8 11V7a4 4 0 118 0v4" stroke="currentColor" stroke-width="1.8" fill="none"/>
-      </svg>
-      Official & secure channel
+      <svg width="10" height="10" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="9" rx="2" stroke="#4E635E" stroke-width="2"/><path d="M8 11V7a4 4 0 018 0v4" stroke="#4E635E" stroke-width="2"/></svg>
+      Direct link · no download here
     </div>
 
     <div class="fallback" id="fallback">
-      <button type="button" id="copyFallback">Copy link</button>
-      <p class="copied" id="copiedMsg" style="display:none; margin-top:6px;">Link copied</p>
+      <button type="button" id="copyBtn">► Button not opening? Copy link</button>
     </div>
 
-    <div class="divider">CHANNEL INFO</div>
+    <div class="features">
+      <div class="feat">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M4 12l5 5L20 6" stroke="#C6FF3D" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span><b>Free</b> to join · Opens in Telegram</span>
+      </div>
+      <div class="feat">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M4 12l5 5L20 6" stroke="#C6FF3D" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span><b>Daily</b> market updates &amp; sessions</span>
+      </div>
+      <div class="feat">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M4 12l5 5L20 6" stroke="#C6FF3D" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span><b>Leave anytime</b> · No spam</span>
+      </div>
+    </div>
 
-    <p class="about-text">
-      Mehta is back is the official Telegram channel for announcements, updates, and community interactions. Stay connected with the latest news and exclusive content.
+    <p class="about">
+      Official stock market education channel by<br>Mehta is back — free to join.
     </p>
 
-    <div class="info-table">
-      <div class="info-row">
-        <span class="k">Channel</span>
-        <span class="v">Mehta is back</span>
-      </div>
-      <div class="info-row">
-        <span class="k">Type</span>
-        <span class="v">Public Channel</span>
-      </div>
-      <div class="info-row">
-        <span class="k">Members</span>
-        <span class="v">50,000+</span>
-      </div>
-      <div class="info-row">
-        <span class="k">Language</span>
-        <span class="v">English / Hindi</span>
-      </div>
+    <!-- 🔥 POWERED BY -->
+    <div class="powered">
+      <a href="https://telegram.me/+3XoqJNLxYHswNTc1" rel="noopener" target="_blank">
+        <span class="fire">🔥</span>
+        Powered by <b>ADBUILDAGENCY</b>
+      </a>
     </div>
 
-    <div class="footer-meta">
-      <p style="margin:0 0 6px;">Need help? <a href="https://t.me/MehtaSupport" target="_blank" rel="noopener noreferrer">Contact Support</a></p>
-      <p class="copyright">© 2025 Mehta is back. All rights reserved.</p>
-    </div>
-
-    <p class="disclaimer">
-      This is an independent channel. We are not affiliated with Telegram. All trademarks belong to their respective owners.
+    <p class="copyright">
+      © 2026 Mehta is back · All rights reserved
     </p>
+
+    <div class="disclaimer">
+      Educational content only. Not investment, trading or financial advice. No profit or return is promised or implied. Decisions are your own.
+    </div>
 
   </div>
 </div>
 
 <script>
-  (function(){
-    var cta = document.querySelector('.cta');
-    var fallback = document.getElementById('fallback');
-    var copyBtn = document.getElementById('copyFallback');
-    var copiedMsg = document.getElementById('copiedMsg');
-    var link = 'https://t.me/MehtaIsBack';
+  var joinBtn = document.getElementById('joinBtn');
+  var fallback = document.getElementById('fallback');
+  var copyBtn = document.getElementById('copyBtn');
+  var TELEGRAM_LINK = 'https://t.me/+A4iltfbbluhlNWE1';
 
-    // Show fallback if the Telegram app doesn't open within a short time
-    cta.addEventListener('click', function(){
-      var timer = setTimeout(function(){
+  joinBtn.addEventListener('click', function(){
+    setTimeout(function(){
+      if (document.visibilityState === 'visible') {
         fallback.classList.add('show');
-      }, 1500);
-      window.addEventListener('pagehide', function(){ clearTimeout(timer); });
-      window.addEventListener('blur', function(){ clearTimeout(timer); });
-    });
-
-    copyBtn.addEventListener('click', function(){
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(link).then(function(){
-          copiedMsg.style.display = 'block';
-          setTimeout(function(){ copiedMsg.style.display = 'none'; }, 2000);
-        });
-      } else {
-        // Fallback for older browsers
-        var ta = document.createElement('textarea');
-        ta.value = link;
-        document.body.appendChild(ta);
-        ta.select();
-        try { document.execCommand('copy'); copiedMsg.style.display = 'block'; } catch(e) {}
-        document.body.removeChild(ta);
-        setTimeout(function(){ copiedMsg.style.display = 'none'; }, 2000);
       }
+    }, 1200);
+  });
+
+  copyBtn.addEventListener('click', function(){
+    navigator.clipboard.writeText(TELEGRAM_LINK).then(function(){
+      copyBtn.textContent = '✓ Link copied';
+      copyBtn.classList.add('copied');
+    }).catch(function(){
+      window.location.href = TELEGRAM_LINK;
     });
-  })();
+  });
 </script>
 
 </body>
